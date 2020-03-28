@@ -45,7 +45,7 @@ EXAMPLES_DIR=/usr/local/bin
 REMOTE_EXAMPLES_DIR=/usr/local/bin
 
 # define all programs
-PROGRAMS = Rf24Bridge
+PROGRAMS = Rf24Bridge UdpListener
 
 BINARY_PREFIX = rf24
 SOURCES = $(PROGRAMS:=.cpp)
