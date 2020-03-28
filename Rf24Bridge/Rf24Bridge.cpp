@@ -1,17 +1,3 @@
-/*
-TMRh20 2014
-
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- version 2 as published by the Free Software Foundation.
- */
-
-/** General Data Transfer Rate Test
- * This example demonstrates basic data transfer functionality with the
- updated library. This example will display the transfer rates acheived using
- the slower form of high-speed transfer using blocking-writes.
- */
-
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -20,34 +6,9 @@ TMRh20 2014
 #include <unistd.h>
 
 using namespace std;
-//
-// Hardware configuration
-//
 
-/****************** Raspberry Pi ***********************/
-
-// Radio CE Pin, CSN Pin, SPI Speed
-// See http://www.airspayce.com/mikem/bcm2835/group__constants.html#ga63c029bd6500167152db4e57736d0939 and the related enumerations for pin information.
-
-// Setup for GPIO 22 CE and CE0 CSN with SPI Speed @ 4Mhz
-//RF24 radio(RPI_V2_GPIO_P1_22, BCM2835_SPI_CS0, BCM2835_SPI_SPEED_4MHZ);
-
-// NEW: Setup for RPi B+
-//RF24 radio(RPI_BPLUS_GPIO_J8_15,RPI_BPLUS_GPIO_J8_24, BCM2835_SPI_SPEED_8MHZ);
-
-// Setup for GPIO 15 CE and CE0 CSN with SPI Speed @ 8Mhz
+// Setup for GPIO 25 CE and CE0 CSN with SPI Speed @ 8Mhz
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
-
-/*** RPi Alternate ***/
-//Note: Specify SPI BUS 0 or 1 instead of CS pin number.
-// See http://tmrh20.github.io/RF24/RPi.html for more information on usage
-
-//RPi Alternate, with MRAA
-//RF24 radio(15,0);
-
-//RPi Alternate, with SPIDEV - Note: Edit RF24/arch/BBB/spi.cpp and  set 'this->device = "/dev/spidev0.0";;' or as listed in /dev
-//RF24 radio(22,0);
-
 
 /****************** Linux (BBB,x86,etc) ***********************/
 
@@ -55,13 +16,6 @@ RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 // See http://iotdk.intel.com/docs/master/mraa/ for more information on MRAA
 // See https://www.kernel.org/doc/Documentation/spi/spidev for more information on SPIDEV
 
-// Setup for ARM(Linux) devices like BBB using spidev (default is "/dev/spidev1.0" )
-//RF24 radio(115,0);
-
-//BBB Alternate, with mraa
-// CE pin = (Header P9, Pin 13) = 59 = 13 + 46 
-//Note: Specify SPI BUS 0 or 1 instead of CS pin number. 
-//RF24 radio(59,0);
 
 /**************************************************************/
 
