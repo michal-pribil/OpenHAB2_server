@@ -1,0 +1,8 @@
+The bridge:
+1. Connects via UDP to OpenHAB2.
+2. Manages all the RF24 devices.
+ 2.1. On init, it scans range of addresses to detect available devices.
+ 2.2. For each device, list of functions on pins is obtained.
+ 2.3. For each pin, an item is generated and placed in files in /etc/openhab2/items
+ 2.4. A sitemap is created in /etc/openhab2/sitemaps that will let the user see what devices are connected. Though this sitemap, user can configure the endpoints (enable/disable, set parameters, e.g. number of digital LED segments connected on a LED driver interface).
+

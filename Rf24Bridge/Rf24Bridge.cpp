@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -5,6 +6,7 @@
 #include <RF24/RF24.h>
 #include <unistd.h>
 #include "UdpListener.h"
+// #include "Rf24Bridge.h"
 
 using namespace std;
 
@@ -32,6 +34,7 @@ int main(int argc, char** argv)
     bool role_ping_out = 1, role_pong_back = 0;
     bool role = 0;
 
+	char sndBuf[32];
     // Print preamble:
 
     cout << "RF24/examples/Transfer/\n";
@@ -44,7 +47,7 @@ int main(int argc, char** argv)
     radio.setRetries(2, 15);                  // Optionally, increase the delay between retries & # of retries
     radio.setCRCLength(RF24_CRC_8);          // Use 8-bit CRC for performance
     radio.printDetails();
-    /********* Role chooser ***********/
+/*     // ******** Role chooser ***********
 
     printf("\n ************ Role Setup ***********\n");
     string input = "";
@@ -61,7 +64,7 @@ int main(int argc, char** argv)
             role = role_ping_out;
         }
     }
-    /***********************************/
+    // ***********************************
 
     if (role == role_ping_out) {
         radio.openWritingPipe(addresses[1]);
@@ -71,11 +74,7 @@ int main(int argc, char** argv)
         radio.openWritingPipe(addresses[0]);
         radio.openReadingPipe(1, addresses[1]);
         radio.startListening();
-    }
-
-    uint8_t regmap[0x18];
-    for (int i = 0; i < 0x18; i++)
-        regmap[i] = radio.read_register(i);
+    } */
 
     for (int i = 0; i < 32; i++) {
         data[i] = rand() % 255;                        //Load the buffer with random data
@@ -83,7 +82,20 @@ int main(int argc, char** argv)
 
     // forever loop
     while (1) {
+		
+      std::this_thread::sleep_for(1s);
+      string recPacket = udpListener.GetNextPacket();
+      
+      if (recPacket.compare(""))
+      {
+        strcpy(sndBuf, recPacket.c_str());
 
+        if (!radio.writeFast(&sndBuf, 32)) {     //Write to the FIFO buffers
+          counter++;                      //Keep count of failed payloads
+        }
+      }
+
+/*
         if (role == role_ping_out) {
             sleep(2);
             printf("Initiating Basic Data Transfer\n\r");
@@ -101,11 +113,10 @@ int main(int argc, char** argv)
 
 
                 //This is only required when NO ACK ( enableAutoAck(0) ) payloads are used
-                /*		if(millis() - pauseTime > 3){       // Need to drop out of TX mode every 4ms if sending a steady stream of multicast data
-                            pauseTime = millis();
-                            radio.txStandBy();				// This gives the PLL time to sync back up
-                        }
-                */
+                //		if(millis() - pauseTime > 3){       // Need to drop out of TX mode every 4ms if sending a steady stream of multicast data
+                 //           pauseTime = millis();
+                   //         radio.txStandBy();				// This gives the PLL time to sync back up
+                     //   }
             }
             stopTime = millis();
 
@@ -136,6 +147,7 @@ int main(int argc, char** argv)
                 counter = 0;
             }
         }
+		*/
 
     } // loop
 } // main
