@@ -4,11 +4,13 @@
 #include <string>
 #include <RF24/RF24.h>
 #include <unistd.h>
+#include "UdpListener.h"
 
 using namespace std;
 
 // Setup for GPIO 25 CE and CE0 CSN with SPI Speed @ 8Mhz
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
+UdpListener udpListener;
 
 /****************** Linux (BBB,x86,etc) ***********************/
 
@@ -27,7 +29,6 @@ unsigned long startTime, stopTime, counter, rxTimer = 0;
 
 int main(int argc, char** argv)
 {
-
     bool role_ping_out = 1, role_pong_back = 0;
     bool role = 0;
 

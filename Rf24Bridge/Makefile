@@ -45,10 +45,11 @@ EXAMPLES_DIR=/usr/local/bin
 REMOTE_EXAMPLES_DIR=/usr/local/bin
 
 # define all programs
-PROGRAMS = Rf24Bridge UdpListener
+PROGRAMS = Rf24Bridge 
+#UdpListener
 
 BINARY_PREFIX = rf24
-SOURCES = $(PROGRAMS:=.cpp)
+SOURCES = $(wildcard *.cpp)
 
 LIBS=-l$(LIB)
 ifeq ($(DRIVER), LittleWire)
@@ -58,7 +59,7 @@ endif
 all: $(PROGRAMS)
 
 $(PROGRAMS): $(SOURCES)
-	$(CXX) $(CFLAGS) -I$(HEADER_DIR)/.. -I.. -L$(LIB_DIR) $@.cpp $(LIBS) -o $@
+	$(CXX) $(CFLAGS) -I$(HEADER_DIR)/.. -I.. -L$(LIB_DIR) $(SOURCES) $(LIBS) -o $@
 
 clean:
 	@echo "[Cleaning]"
