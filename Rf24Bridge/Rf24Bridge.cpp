@@ -7,8 +7,10 @@
 #include <unistd.h>
 #include "UdpListener.h"
 // #include "Rf24Bridge.h"
+#include "Rf24Dev.h"
 
 using namespace std;
+using namespace rf24device;
 
 // Setup for GPIO 25 CE and CE0 CSN with SPI Speed @ 8Mhz
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
@@ -47,6 +49,15 @@ int main(int argc, char** argv)
     radio.setRetries(2, 15);                  // Optionally, increase the delay between retries & # of retries
     radio.setCRCLength(RF24_CRC_8);          // Use 8-bit CRC for performance
     radio.printDetails();
+    
+    t_message message;
+    
+/*     message.ep = address_ep_global;
+    message.cmd = cmd_ep_config + 13;
+    message.data[0] = 12;
+    
+    radio.writeFast(reinterpret_cast<uint8_t*> (&message), 32); */
+    
 /*     // ******** Role chooser ***********
 
     printf("\n ************ Role Setup ***********\n");
@@ -67,7 +78,6 @@ int main(int argc, char** argv)
     // ***********************************
 
     if (role == role_ping_out) {
-        radio.openWritingPipe(addresses[1]);
         radio.openReadingPipe(1, addresses[0]);
         radio.stopListening();
     } else {
@@ -76,9 +86,9 @@ int main(int argc, char** argv)
         radio.startListening();
     } */
 
-    for (int i = 0; i < 32; i++) {
-        data[i] = rand() % 255;                        //Load the buffer with random data
-    }
+    radio.openWritingPipe(addresses[1]);
+    radio.openReadingPipe(1, addresses[0]);
+    radio.stopListening();
 
     // forever loop
     while (1) {
