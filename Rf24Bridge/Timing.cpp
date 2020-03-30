@@ -1,4 +1,4 @@
-#include "timing.h"
+#include "Timing.h"
 
 Timing::Timing(){};
 
